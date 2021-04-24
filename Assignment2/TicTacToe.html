@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Reverse Tic Tac Toe</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="TicTacToe.css">
+</head>
+<body>
+	<header>
+		<h1>
+			Tic-Tac-Toe Reverse
+		</h1>
+	</header>
+
+	<div align="center">
+            <div id="startbutton">
+            	<p class="notes">To play this game Click on below button :</p>
+                <img id="play" src="play.png" onclick="startGame()">
+            </div>
+
+            <div id="buttons">
+            	 <table>
+            <tr>
+                <td id="A00"><button type="button" id = "0" onclick="player1(this.id)" disabled></button>
+                </td>
+                <td id="A01"><button type="button" id = "1" onclick="player1(this.id)"  disabled></button>
+                </td>
+                <td id="A02"><button type="button" id = "2" onclick="player1(this.id)"  disabled></button>
+                </td>
+            </tr>
+            <tr>
+                <td id="A10"><button type="button" id = "3" onclick="player1(this.id)"  disabled></button>
+                </td>
+                <td id="A11"><button type="button" id = "4" onclick="player1(this.id)"  disabled></button>
+                </td>
+                <td id="A12"><button type="button" id = "5" onclick="player1(this.id)"  disabled></button>
+                </td>
+            </tr>
+            <tr>
+                <td id="A20"><button type="button" id = "6" onclick="player1(this.id)"  disabled></button>
+                </td>
+                <td id="A21"><button type="button" id = "7" onclick="player1(this.id)"  disabled></button>
+                </td>
+                <td id="A22"><button type="button" id = "8" onclick="player1(this.id)"  disabled></button>   
+           </td>
+            </tr>
+        </table>
+                 </div>
+
+            <div><p id="playerTurn"></p></div>
+
+            <div class="notes">
+				<p><br>©️ Kunj Soni. Sheridan College </p>
+			</div>
+
+    </div>
+
+        <script>
+            var button0 = document.getElementById("0");    
+            var button1 = document.getElementById("1");
+            var button2 = document.getElementById("2");    
+            var button3 = document.getElementById("3");
+            var button4 = document.getElementById("4");    
+            var button5 = document.getElementById("5");
+            var button6 = document.getElementById("6");    
+            var button7 = document.getElementById("7");
+            var button8 = document.getElementById("8");
+
+            var turn = document.getElementById("playerTurn")
+
+            var start = document.getElementById("play")
+            
+        	let status = [,,,,,,,,,];
+      		var firstPlayer,secondPlayer;
+
+      		const loosingCondition = [[0, 1, 2], [3, 4, 5], [6, 7, 8],[0, 3, 6], [1, 4, 7], [2, 5, 8],[2, 4, 6], [0, 4, 8]];
+
+        	var playable = false;
+        	var j=1;
+
+      		function startGame() {
+        	playable = true;        
+
+        	firstPlayer= prompt("To Play this game Please enter Your initials \nPlayer 1:- ");
+        	secondPlayer= prompt("To Play this game Please enter Your initials \nPlayer 2:- ");
+
+        	while(firstPlayer == secondPlayer){
+              alert("You fullish cannot enter both same initals");
+              firstPlayer= prompt("To Play this game Please enter Your initials \nPlayer 1:- ");
+          secondPlayer= prompt("To Play this game Please enter Your initials \nPlayer 2:- ");
+
+          }
+
+          	button1.disabled=false;    button2.disabled=false;    button3.disabled=false;
+                button4.disabled=false;    button5.disabled=false;    button6.disabled=false;
+                button7.disabled=false;    button8.disabled=false;    button0.disabled=false;
+
+        	for (var i = 0; i < 9; i++) {
+                var board = document.getElementsByTagName("button")[i];
+                board.style.backgroundColor = "white";
+                board.style.color = "black";
+                board.innerHTML = " ";
+                board.setAttribute("onclick", "player1(this.id)");
+        	}
+        	
+        	status = [,,,,,,,,,];
+
+      		}
+              
+    		function player1(id) {
+        	if(playable) {
+          		var spot = document.getElementById(id);
+          		if (spot.innerText != firstPlayer && spot.innerText != secondPlayer && spot.innerHTML == " ") {
+            		if(j==1){
+            			spot.innerText = firstPlayer;
+            			spot.setAttribute("onclick", " ");
+            			status[id] = 2;
+            			looserChecking(id, firstPlayer,secondPlayer);
+            			console.log(id+1);
+            			j=2;
+            		}
+
+	         		else{ 
+    		        	spot.innerText = secondPlayer;
+            			spot.setAttribute("onclick", " ");
+            			status[id] = 2;
+            			looserChecking(id, secondPlayer,firstPlayer);
+            			console.log(id+1);
+            			j=1;
+            			}
+
+        			}
+      			}
+  			} 
+      
+         
+    		function looserChecking(id, player, winner) {
+        	var availableSpot = 9;
+        	
+        	for (var i = 0; i < loosingCondition.length; i++) {
+          		if((player == document.getElementsByTagName("button")[loosingCondition[i][0]].innerHTML) 
+                  && (player == document.getElementsByTagName("button")[loosingCondition[i][1]].innerHTML)
+                  && (player == document.getElementsByTagName("button")[loosingCondition[i][2]].innerHTML))
+          		{
+              		playable = false;
+
+                  		alert("Winner of the game is " + winner + ". You Rock 🏆🏆!!\nLooser of the game is " + player + ". Need To Try one more Time 🤙🤙!!");
+              			
+              			for (var j = 0; j < 3; j++) {
+                			document.getElementsByTagName("button")[loosingCondition[i][j]].style.backgroundColor = "#df4b4b";
+
+              			}
+          		}
+        	}
+
+	        for (var i = 0; i < status.length; i++) {
+    	      if(status[i] != null) {
+        	    availableSpot--;
+          		}
+         
+        	}
+
+        	if (playable && availableSpot == 0) {
+          		alert ("It is a Draw. Please Play this game one more time 😎😎😎 !!!!");
+          		startGame();
+        	}
+        
+      }
+
+       </script>
+</body>
+</html>
